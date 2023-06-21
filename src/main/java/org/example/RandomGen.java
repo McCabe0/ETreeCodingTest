@@ -12,7 +12,7 @@ import java.util.TreeMap;
         // Random generator for a float value between 0 and 1
         private final RandomFloatGen randomGenerator;
         // TreeMap for storing interval possibilities
-        private TreeMap<Float, Integer> randomMap;
+        private TreeMap<Float, Integer> cumulativePossibilityMap;
 
         public RandomGen(int[] randomNums, float[] probabilities, RandomFloatGen randomGenerator){
             this.randomNums = randomNums;
@@ -24,16 +24,16 @@ import java.util.TreeMap;
             validation(randomNums, probabilities, randomGenerator);
             cumulativePossibilities(randomNums, probabilities);
             float randFloat = randomGenerator.nextFloat();
-            return randomMap.ceilingEntry(randFloat).getValue();
+            return cumulativePossibilityMap.ceilingEntry(randFloat).getValue();
         }
 
 
         private void cumulativePossibilities(int[] randomNums, float[] probabilities) {
-            randomMap = new TreeMap<>();
+            cumulativePossibilityMap = new TreeMap<>();
             float interval = 0;
             for(int i = 0; i< probabilities.length; i++) {
                 interval += probabilities[i];
-                randomMap.put(interval, randomNums[i]);
+                cumulativePossibilityMap.put(interval, randomNums[i]);
             }
         }
 
