@@ -8,12 +8,14 @@ Implement the solution in the language of your choice, Java is preferred, but Ko
 languages are completely fine. Make sure your code is exemplary, as if it was going to be
 shipped as part of a production system. You should leverage comments whenever you see fit
 to
+
 Setup
+
 1. Setup a simple java ( or kotlin) project in an IDE of your choice
 2. You can use maven or gradle (gradle with kotlin is preferred)
 3. Java version should be 17 as minimum
 4. Kotlin version ( if you choose to use it) should be 1.8.0
-5. 
+
 Algorithms
 
 As a quick check, given Random Numbers are [-1, 0, 1, 2, 3] and Probabilities are
@@ -21,9 +23,13 @@ As a quick check, given Random Numbers are [-1, 0, 1, 2, 3] and Probabilities ar
 As the results are random, these particular results are unlikely.
 
 -1: 1 times
+
 0: 22 times
+
 1: 57 times
+
 2: 20 times
+
 3: 0 times
 
 You may use Random.nextFloat() which returns a pseudo random number between 0 and 1.
