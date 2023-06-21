@@ -13,13 +13,17 @@ Setup
 2. You can use maven or gradle (gradle with kotlin is preferred)
 3. Java version should be 17 as minimum
 4. Kotlin version ( if you choose to use it) should be 1.8.0
+5. 
 Algorithms
+
 As a quick check, given Random Numbers are [-1, 0, 1, 2, 3] and Probabilities are
 [0.01, 0.3, 0.58, 0.1, 0.01] if we call nextNum() 100 times we may get the following results.
 As the results are random, these particular results are unlikely.
+
 -1: 1 times
 0: 22 times
 1: 57 times
 2: 20 times
 3: 0 times
+
 You may use Random.nextFloat() which returns a pseudo random number between 0 and 1.
