@@ -6,26 +6,24 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.mock;
 
-class RandomGenIntergrationTest {
+class RandomGenIntegrationTest {
 
     int[] randomNums =      {-1,    0,    1,     2,    3};
     float[] probabilities = {0.01f, 0.3f, 0.58f, 0.1f,  0.01f};
-    ValidationHelper validationHelper = mock(ValidationHelper.class);
-    RandomGen underTest = new RandomGen(randomNums, probabilities, new RandomFloatGen(), validationHelper);
+    RandomGen underTest = new RandomGen(randomNums, probabilities, new RandomFloatGen());
 
     @Test
-    public void testingWithLargeList() {
-        int iteration = 100000;
+    public void LargeSampleTestToSeeWithinRangeOfProbability() {
+        int numberOfIteration = 100000;
         float uncertainty = 0.05f;
-        Map<Integer, Integer> map = loopThroughRandomGenFor(iteration);
+        Map<Integer, Integer> map = loopThroughRandomGenFor(numberOfIteration);
 
+        //Loop through the map to test to see if probability is within range of uncertainty
         for (int i = 0; i < randomNums.length; i++) {
-            if (null == map.get(randomNums[i])) {
-                map.put(randomNums[i], 0);
-            }
-            float probabilityOfNumber = map.get(randomNums[i]).floatValue() / iteration;
+            //if number doesn't appear set it to zero instead of null
+            map.putIfAbsent(randomNums[i], 0);
+            float probabilityOfNumber = map.get(randomNums[i]).floatValue() / numberOfIteration;
             assertTrue(probabilityOfNumber > probabilities[i] - uncertainty || probabilityOfNumber == 0);
             assertTrue(probabilityOfNumber < probabilities[i] + uncertainty);
         }

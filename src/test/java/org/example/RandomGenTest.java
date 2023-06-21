@@ -6,16 +6,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class RandomGenTest {
 
     int[] randomNums =      {-1,    0,    1,     2,    3};
     float[] probabilities = {0.01f, 0.3f, 0.58f, 0.1f,  0.01f};
     RandomFloatGen randomFloatGen = mock(RandomFloatGen.class);
-    ValidationHelper validationHelper = mock(ValidationHelper.class);
-    RandomGen underTest = new RandomGen(randomNums, probabilities, randomFloatGen, validationHelper);
+    RandomGen underTest = new RandomGen(randomNums, probabilities, randomFloatGen);
 
     @Test
     void shouldReturnMinusOne() {
@@ -68,13 +66,13 @@ class RandomGenTest {
                 0.3097881f, 0.7781256f, 0.29991102f, 0.25514543f, 0.3972559f, 0.0042955f, 0.99999f);
 
         // map for counting the results
-        Map resultMap = new HashMap<Integer, Integer>();
+        Map<Integer, Integer> resultMap = new HashMap<>();
         for(int i=0; i < 12; i++){
             int nextNum = underTest.nextNum();
             if(resultMap.get(nextNum) == null){
                 resultMap.put(nextNum, 1);
             } else {
-                resultMap.put(nextNum, (Integer) resultMap.get(nextNum) + 1);
+                resultMap.put(nextNum, resultMap.get(nextNum) + 1);
             }
         }
 
@@ -85,5 +83,47 @@ class RandomGenTest {
         assertEquals(1, resultMap.get(-1));
         assertEquals(1, resultMap.get(3));
     }
+    @Test
+    public void haveToBeSameLength() {
+        RandomGen underTest = new RandomGen(new int[1], probabilities, randomFloatGen);
+        assertThrows(IllegalArgumentException.class, underTest::nextNum);
+        verifyNoInteractions(randomFloatGen);
+    }
+
+    @Test
+    public void arrayOfNumsCantBeNull() {
+        RandomGen underTest = new RandomGen(null, probabilities, randomFloatGen);
+        assertThrows(IllegalArgumentException.class, underTest::nextNum);
+        verifyNoInteractions(randomFloatGen);
+    }
+
+    @Test
+    public void ArrayOfProbabilityCantBeNull() {
+        RandomGen underTest = new RandomGen(new int[1], null, randomFloatGen);
+        assertThrows(IllegalArgumentException.class, underTest::nextNum);
+        verifyNoInteractions(randomFloatGen);
+    }
+
+    @Test
+    public void probabilityHasToAddToOne() {
+        float[] probabilities = {0.1f, 0.3f, 0.5f, 0.2f};
+        RandomGen underTest = new RandomGen(new int[1], probabilities, randomFloatGen);
+        assertThrows(IllegalArgumentException.class, underTest::nextNum);
+        verifyNoInteractions(randomFloatGen);
+    }
+
+    @Test
+    public void randomGenCantBeNull() {
+        RandomGen underTest = new RandomGen(new int[4], probabilities, null);
+        assertThrows(IllegalArgumentException.class, underTest::nextNum);
+        verifyNoInteractions(randomFloatGen);
+    }
+
+    @Test
+    public void noExceptionThrown() {
+        assertDoesNotThrow(() ->  underTest.nextNum());
+        verify(randomFloatGen).nextFloat();
+    }
+
 
 }
